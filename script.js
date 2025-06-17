@@ -225,14 +225,12 @@ class BadmintonPairingSystem {
         const levelDiff1 = Math.abs(pairing.pair1[0].level - pairing.pair1[1].level);
         const levelDiff2 = Math.abs(pairing.pair2[0].level - pairing.pair2[1].level);
         
-        // 隊內等級差距懲罰
-        score -= (levelDiff1 + levelDiff2) * 5;
+        // 隊內等級差距懲罰 - 減少懲罰，因為有時候需要強弱搭配
+        score -= (levelDiff1 + levelDiff2) * 3;
         
-        // 隊伍間等級差距評估
-        const avg1 = (pairing.pair1[0].level + pairing.pair1[1].level) / 2;
-        const avg2 = (pairing.pair2[0].level + pairing.pair2[1].level) / 2;
-        const teamDiff = Math.abs(avg1 - avg2);
-        score -= teamDiff * 3;
+        // 隊伍間實力平衡評估 - 這是最重要的
+        const teamBalance = this.evaluateTeamBalance(pairing);
+        score += teamBalance;
         
         // 檢查配對歷史 - 避免重複配對
         const historyPenalty = this.getHistoryPenalty(pairing);
@@ -243,6 +241,88 @@ class BadmintonPairingSystem {
         score += fairnessBonus;
         
         return score;
+    }
+
+    evaluateTeamBalance(pairing) {
+        const team1Players = pairing.pair1;
+        const team2Players = pairing.pair2;
+        
+        // 計算各隊的實力指標
+        const team1Strength = this.calculateTeamStrength(team1Players);
+        const team2Strength = this.calculateTeamStrength(team2Players);
+        
+        // 隊伍間實力差距 - 越接近越好
+        const strengthDiff = Math.abs(team1Strength - team2Strength);
+        let balanceScore = 50 - (strengthDiff * 10); // 基礎50分，實力差距每0.1差1分
+        
+        // 額外獎勵：理想的強弱搭配
+        const team1Balance = this.getTeamInternalBalance(team1Players);
+        const team2Balance = this.getTeamInternalBalance(team2Players);
+        
+        // 如果兩隊都是強弱搭配（而不是強強對弱弱），給額外獎勵
+        if (team1Balance > 0 && team2Balance > 0) {
+            balanceScore += 15; // 強弱搭配獎勵
+        }
+        
+        return Math.max(balanceScore, -30); // 最低不低於-30分
+    }
+
+    calculateTeamStrength(players) {
+        // 考慮強弱搭配的效果
+        const levels = players.map(p => p.level).sort((a, b) => b - a); // 從高到低
+        const strongPlayer = levels[0];
+        const weakPlayer = levels[1];
+        
+        // 強弱搭配的實力計算：強者帶弱者，但弱者會拖累強者
+        // 公式：(強者實力 * 0.8 + 弱者實力 * 1.2) / 2
+        // 這樣強者影響較大，但弱者的影響也不能忽視
+        const teamStrength = (strongPlayer * 0.8 + weakPlayer * 1.2) / 2;
+        
+        return teamStrength;
+    }
+
+    getTeamInternalBalance(players) {
+        // 評估隊內的強弱搭配程度
+        const levelDiff = Math.abs(players[0].level - players[1].level);
+        
+        // 理想的等級差距是1-3級，給予獎勵
+        if (levelDiff >= 1 && levelDiff <= 3) {
+            return 1; // 好的強弱搭配
+        } else if (levelDiff === 0) {
+            return 0; // 同等級，中性
+        } else {
+            return -1; // 差距太大，不好的搭配
+        }
+    }
+
+    getBalanceDisplay(pairs) {
+        if (!pairs || pairs.length !== 2) return "未知";
+        
+        const team1Strength = this.calculateTeamStrength(pairs[0].players);
+        const team2Strength = this.calculateTeamStrength(pairs[1].players);
+        const strengthDiff = Math.abs(team1Strength - team2Strength);
+        
+        let balanceText = "";
+        let balanceColor = "";
+        
+        if (strengthDiff <= 0.5) {
+            balanceText = "非常平衡";
+            balanceColor = "#28a745"; // 綠色
+        } else if (strengthDiff <= 1.0) {
+            balanceText = "平衡";
+            balanceColor = "#28a745"; // 綠色
+        } else if (strengthDiff <= 1.5) {
+            balanceText = "稍有差距";
+            balanceColor = "#ffc107"; // 黃色
+        } else if (strengthDiff <= 2.0) {
+            balanceText = "差距較大";
+            balanceColor = "#fd7e14"; // 橙色
+        } else {
+            balanceText = "差距很大";
+            balanceColor = "#dc3545"; // 紅色
+        }
+        
+        return `<span style="color: ${balanceColor}; font-weight: bold;">${balanceText}</span> (差距: ${strengthDiff.toFixed(1)})`;
     }
 
     getFairnessBonus(pairing) {
@@ -604,7 +684,7 @@ class BadmintonPairingSystem {
                         <div class="court-pairs">
                             ${court.pairs.map(pair => `
                                 <div class="pair">
-                                    <h4>${pair.name}</h4>
+                                    <h4>${pair.name} <span class="team-strength">(實力: ${this.calculateTeamStrength(pair.players).toFixed(1)})</span></h4>
                                     <div class="pair-players">
                                         ${pair.players.map(player => `
                                             <div class="pair-player">
@@ -615,6 +695,9 @@ class BadmintonPairingSystem {
                                     </div>
                                 </div>
                             `).join('')}
+                            <div class="balance-info">
+                                <span class="balance-score">平衡度: ${this.getBalanceDisplay(court.pairs)}</span>
+                            </div>
                         </div>
                         <div class="court-actions">
                             <button class="end-game-btn" onclick="pairingSystem.endGame(${court.id})">結束比賽</button>
@@ -660,7 +743,7 @@ class BadmintonPairingSystem {
                         <div class="court-pairs">
                             ${court.pairs.map(pair => `
                                 <div class="pair">
-                                    <h4>${pair.name}</h4>
+                                    <h4>${pair.name} <span class="team-strength">(實力: ${this.calculateTeamStrength(pair.players).toFixed(1)})</span></h4>
                                     <div class="pair-players">
                                         ${pair.players.map(player => `
                                             <div class="pair-player">
@@ -671,6 +754,9 @@ class BadmintonPairingSystem {
                                     </div>
                                 </div>
                             `).join('')}
+                            <div class="balance-info">
+                                <span class="balance-score">平衡度: ${this.getBalanceDisplay(court.pairs)}</span>
+                            </div>
                         </div>
                         <div class="court-actions">
                             <button class="start-court-btn" onclick="pairingSystem.startCourt(${court.id})">開始比賽</button>

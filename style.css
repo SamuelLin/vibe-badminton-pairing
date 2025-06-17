@@ -455,6 +455,26 @@ header h1 {
     background: #5a32a3;
 }
 
+.team-strength {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: normal;
+}
+
+.balance-info {
+    text-align: center;
+    padding: 8px;
+    margin-top: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+.balance-score {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
