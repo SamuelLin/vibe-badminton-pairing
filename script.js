@@ -251,9 +251,26 @@ class BadmintonPairingSystem {
         const team1Strength = this.calculateTeamStrength(team1Players);
         const team2Strength = this.calculateTeamStrength(team2Players);
         
-        // 隊伍間實力差距 - 越接近越好
+        // 隊伍間實力差距 - 越接近越好，加重懲罰
         const strengthDiff = Math.abs(team1Strength - team2Strength);
-        let balanceScore = 50 - (strengthDiff * 10); // 基礎50分，實力差距每0.1差1分
+        let balanceScore = 60 - (strengthDiff * 25); // 基礎60分，實力差距每0.1差2.5分
+        
+        // 額外檢查：避免明顯不平衡的情況
+        // 例如：高+中 vs 低+低 這種情況
+        const team1Levels = team1Players.map(p => p.level).sort((a, b) => b - a);
+        const team2Levels = team2Players.map(p => p.level).sort((a, b) => b - a);
+        
+        // 檢查最強vs最強，最弱vs最弱的差距
+        const strongestDiff = Math.abs(team1Levels[0] - team2Levels[0]);
+        const weakestDiff = Math.abs(team1Levels[1] - team2Levels[1]);
+        
+        // 如果強者或弱者差距太大，額外懲罰
+        if (strongestDiff >= 2) {
+            balanceScore -= strongestDiff * 8; // 強者差距懲罰
+        }
+        if (weakestDiff >= 2) {
+            balanceScore -= weakestDiff * 8; // 弱者差距懲罰
+        }
         
         // 額外獎勵：理想的強弱搭配
         const team1Balance = this.getTeamInternalBalance(team1Players);
@@ -264,7 +281,7 @@ class BadmintonPairingSystem {
             balanceScore += 15; // 強弱搭配獎勵
         }
         
-        return Math.max(balanceScore, -30); // 最低不低於-30分
+        return Math.max(balanceScore, -50); // 最低不低於-50分
     }
 
     calculateTeamStrength(players) {
@@ -273,10 +290,27 @@ class BadmintonPairingSystem {
         const strongPlayer = levels[0];
         const weakPlayer = levels[1];
         
-        // 強弱搭配的實力計算：強者帶弱者，但弱者會拖累強者
-        // 公式：(強者實力 * 0.8 + 弱者實力 * 1.2) / 2
-        // 這樣強者影響較大，但弱者的影響也不能忽視
-        const teamStrength = (strongPlayer * 0.8 + weakPlayer * 1.2) / 2;
+        // 改進的實力計算：
+        // 1. 基礎實力是兩人平均
+        // 2. 考慮配合效果：等級差距適中時有加成，差距太大時有懲罰
+        const baseStrength = (strongPlayer + weakPlayer) / 2;
+        const levelDiff = strongPlayer - weakPlayer;
+        
+        let teamStrength = baseStrength;
+        
+        if (levelDiff <= 1) {
+            // 等級相近，配合良好
+            teamStrength += 0.2;
+        } else if (levelDiff <= 2) {
+            // 理想的強弱搭配，強者可以帶動弱者
+            teamStrength += 0.3;
+        } else if (levelDiff <= 3) {
+            // 可接受的搭配
+            teamStrength += 0.1;
+        } else {
+            // 差距太大，協調困難
+            teamStrength -= 0.2;
+        }
         
         return teamStrength;
     }
@@ -302,19 +336,23 @@ class BadmintonPairingSystem {
         const team2Strength = this.calculateTeamStrength(pairs[1].players);
         const strengthDiff = Math.abs(team1Strength - team2Strength);
         
+        // 計算配對評分（用於調試）
+        const pairing = { pair1: pairs[0].players, pair2: pairs[1].players };
+        const balanceScore = this.evaluateTeamBalance(pairing);
+        
         let balanceText = "";
         let balanceColor = "";
         
-        if (strengthDiff <= 0.5) {
+        if (strengthDiff <= 0.3) {
             balanceText = "非常平衡";
             balanceColor = "#28a745"; // 綠色
-        } else if (strengthDiff <= 1.0) {
+        } else if (strengthDiff <= 0.6) {
             balanceText = "平衡";
             balanceColor = "#28a745"; // 綠色
-        } else if (strengthDiff <= 1.5) {
+        } else if (strengthDiff <= 1.0) {
             balanceText = "稍有差距";
             balanceColor = "#ffc107"; // 黃色
-        } else if (strengthDiff <= 2.0) {
+        } else if (strengthDiff <= 1.5) {
             balanceText = "差距較大";
             balanceColor = "#fd7e14"; // 橙色
         } else {
@@ -322,7 +360,7 @@ class BadmintonPairingSystem {
             balanceColor = "#dc3545"; // 紅色
         }
         
-        return `<span style="color: ${balanceColor}; font-weight: bold;">${balanceText}</span> (差距: ${strengthDiff.toFixed(1)})`;
+        return `<span style="color: ${balanceColor}; font-weight: bold;">${balanceText}</span> (差距: ${strengthDiff.toFixed(1)}, 評分: ${balanceScore.toFixed(0)})`;
     }
 
     getFairnessBonus(pairing) {
