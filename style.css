@@ -26,6 +26,15 @@ header h1 {
     color: white;
     font-size: 2.5rem;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 5px;
+}
+
+.version-info {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    margin-bottom: 10px;
 }
 
 .controls-section {
@@ -475,6 +484,31 @@ header h1 {
     color: #495057;
 }
 
+.footer {
+    margin-top: 30px;
+    padding: 20px 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+}
+
+.footer-content span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
@@ -504,5 +538,10 @@ header h1 {
     .court-actions button {
         margin-bottom: 5px;
         min-width: 100px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 10px;
     }
 } 

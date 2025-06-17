@@ -10,6 +10,7 @@ class BadmintonPairingSystem {
         this.initializeEventListeners();
         this.updateCourts();
         this.loadFromLocalStorage();
+        this.displayLastUpdated();
     }
 
     initializeEventListeners() {
@@ -643,6 +644,23 @@ class BadmintonPairingSystem {
         this.updateDisplay();
         
         alert('所有資料已清空，系統已重置');
+    }
+
+    displayLastUpdated() {
+        const now = new Date();
+        const timeString = now.toLocaleString('zh-TW', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        const lastUpdatedElement = document.getElementById('last-updated');
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = `載入時間: ${timeString}`;
+        }
     }
 
     updateDisplay() {
