@@ -1,0 +1,488 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: white;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.controls-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.control-group label {
+    font-weight: 600;
+    color: #555;
+}
+
+.control-group input, .control-group select {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.control-group button {
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.control-group button:hover {
+    background: #5a6fd8;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.left-panel, .right-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.player-management {
+    padding: 20px;
+}
+
+.player-management h2 {
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.add-player {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.add-player input, .add-player select {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.add-player button {
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.add-player button:hover {
+    background: #218838;
+}
+
+.waiting-players, .all-players {
+    margin-bottom: 20px;
+}
+
+.waiting-players h3, .all-players h3 {
+    margin-bottom: 15px;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.player-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #667eea;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-name {
+    font-weight: 500;
+}
+
+.player-level {
+    background: #667eea;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.player-stats {
+    background: #f8f9fa;
+    color: #495057;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 11px;
+    border: 1px solid #dee2e6;
+}
+
+.player-actions button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.remove-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.remove-btn:hover {
+    background: #c82333;
+}
+
+.courts-section {
+    padding: 20px;
+}
+
+.courts-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.court {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.court.occupied {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.court-header {
+    background: #667eea;
+    color: white;
+    padding: 12px 15px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.court.occupied .court-header {
+    background: #28a745;
+}
+
+.court-content {
+    padding: 15px;
+}
+
+.court-pairs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.pair {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.pair h4 {
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.pair-players {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.pair-player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.court-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.end-game-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.end-game-btn:hover {
+    background: #c82333;
+}
+
+.pairing-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.auto-pair-btn, .manual-start-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auto-pair-btn {
+    background: #28a745;
+    color: white;
+}
+
+.auto-pair-btn:hover {
+    background: #218838;
+}
+
+.auto-pair-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.manual-start-btn {
+    background: #007bff;
+    color: white;
+}
+
+.manual-start-btn:hover {
+    background: #0056b3;
+}
+
+.manual-start-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.empty-court {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+.court-edit-mode {
+    background: #fff3cd !important;
+    border-color: #ffc107 !important;
+}
+
+.court-edit-mode .court-header {
+    background: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.edit-court-btn {
+    background: #ffc107;
+    color: #212529;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.edit-court-btn:hover {
+    background: #e0a800;
+}
+
+.save-court-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.save-court-btn:hover {
+    background: #218838;
+}
+
+.cancel-edit-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.cancel-edit-btn:hover {
+    background: #5a6268;
+}
+
+.player-selector {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.start-court-btn {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.start-court-btn:hover {
+    background: #138496;
+}
+
+.reset-stats-btn {
+    width: 100%;
+    padding: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.reset-stats-btn:hover {
+    background: #c82333;
+}
+
+.clear-all-btn {
+    width: 100%;
+    padding: 10px;
+    background: #6f42c1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.clear-all-btn:hover {
+    background: #5a32a3;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .add-player {
+        flex-direction: column;
+    }
+    
+    .control-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .court-pairs {
+        grid-template-columns: 1fr;
+    }
+    
+    .pairing-controls {
+        flex-direction: column;
+    }
+    
+    .court-actions {
+        flex-wrap: wrap;
+    }
+    
+    .court-actions button {
+        margin-bottom: 5px;
+        min-width: 100px;
+    }
+} 
