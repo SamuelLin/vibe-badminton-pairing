@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# 羽球配對系統 sitemap
+Sitemap: https://samuellin.github.io/vibe-badminton-pairing/sitemap.xml
+
+# 優化爬取
+Crawl-delay: 1 

@@ -3,14 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>羽球配對系統</title>
+    <title>羽球配對 | 羽球場地管理 | 羽毛球配對平台</title>
+    <meta name="description" content="羽球配對系統，提供羽球配對、場地管理、等級配對等功能。適合羽球館、羽球社團使用，讓羽球愛好者享受公平競技的樂趣。">
+    <meta name="keywords" content="羽球,羽球配對,羽毛球,羽毛球配對,羽球場地,羽球管理,羽球系統,羽球等級,羽球競技,羽球社團,羽球館,配對系統,運動配對,球類運動">
+    <meta name="author" content="samuelhsnu@gmail.com">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="羽球配對系統">
+    <meta property="og:description" content="羽球配對系統、場地管理、等級平衡，讓羽球運動更公平有趣！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://samuellin.github.io/vibe-badminton-pairing">
+    <meta property="og:locale" content="zh_TW">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:title" content="羽球配對系統 - 智能羽球配對平台">
+    <meta name="twitter:description" content="專業的羽球配對系統，智能配對、場地管理、等級平衡">
+    
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "羽球配對系統",
+        "description": "羽球配對系統，提供羽球配對、場地管理、等級配對等功能",
+        "url": "https://samuellin.github.io/vibe-badminton-pairing",
+        "applicationCategory": "SportsApplication",
+        "operatingSystem": "Web Browser",
+        "author": {
+            "@type": "Person",
+            "name": "Samuel",
+            "email": "samuelhsnu@gmail.com"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TWD"
+        },
+        "featureList": [
+            "羽球配對",
+            "動態場地管理",
+            "等級平衡系統",
+            "公平性統計",
+            "即時場地狀態"
+        ]
+    }
+    </script>
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>🏸 羽球配對系統</h1>
-            <div class="version-info">v0.1.0 - 實力平衡版</div>
+            <div class="version-info">v0.1.0</div>
+            <div class="seo-description">
+                提供羽球配對、動態場地管理、等級平衡算法，適合羽球館、羽球社團使用
+            </div>
         </header>
 
         <div class="controls-section">
@@ -24,7 +73,7 @@
         <div class="main-content">
             <div class="left-panel">
                 <div class="player-management">
-                    <h2>人員管理</h2>
+                    <h2>羽球人員管理</h2>
                     <div class="add-player">
                         <input type="text" id="player-name" placeholder="輸入姓名">
                         <select id="player-level">
@@ -58,7 +107,7 @@
 
             <div class="right-panel">
                 <div class="courts-section">
-                    <h2>場地狀況</h2>
+                    <h2>羽球場地狀況管理</h2>
                     <div id="courts-container"></div>
                     <div class="pairing-controls">
                         <button id="auto-pair" class="auto-pair-btn">自動配對</button>
@@ -69,11 +118,34 @@
         </div>
     </div>
 
+    <!-- SEO Content -->
+    <div class="seo-content" style="display: none;">
+        <h3>羽球配對系統功能特色</h3>
+        <p>本羽球配對系統專為羽球愛好者設計，提供完整的羽球場地管理解決方案。無論是羽球館經營、羽球社團活動，或是業餘羽球聚會，都能透過我們的智能羽球配對功能，讓羽球運動更公平、更有趣。</p>
+        
+        <h4>羽球配對功能</h4>
+        <ul>
+            <li>智能羽球配對算法，根據羽球等級自動配對</li>
+            <li>避免重複配對，確保羽球運動的多樣性</li>
+            <li>實力平衡計算，讓羽球比賽更具競爭性</li>
+            <li>公平性統計，記錄每位羽球員的參與情況</li>
+        </ul>
+        
+        <h4>羽球場地管理</h4>
+        <ul>
+            <li>動態羽球場地數量調整</li>
+            <li>即時羽球場地狀態顯示</li>
+            <li>羽球場地使用時間追蹤</li>
+            <li>羽球場地配對編輯功能</li>
+        </ul>
+        
+        <h4>適用對象</h4>
+        <p>羽球館、羽球社團、羽球俱樂部、羽球愛好者、羽毛球運動推廣、運動中心、體育館羽球活動</p>
+    </div>
+    
     <footer class="footer">
         <div class="footer-content">
-            <span>羽球配對系統 v0.1.0</span>
-            <span>更新：實力平衡算法優化</span>
-            <span id="last-updated"></span>
+            <span>羽球配對專家 | 有問題歡迎來信 <a href="mailto:samuelhsnu@gmail.com">samuelhsnu@gmail.com</a></span>
         </div>
     </footer>
 

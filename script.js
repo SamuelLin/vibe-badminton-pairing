@@ -648,18 +648,11 @@ class BadmintonPairingSystem {
 
     displayLastUpdated() {
         const now = new Date();
-        const timeString = now.toLocaleString('zh-TW', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
+        const currentYear = now.getFullYear();
         
-        const lastUpdatedElement = document.getElementById('last-updated');
-        if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = `載入時間: ${timeString}`;
+        const currentYearElement = document.getElementById('current-year');
+        if (currentYearElement) {
+            currentYearElement.textContent = currentYear;
         }
     }
 
