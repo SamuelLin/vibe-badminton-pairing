@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- 球拍頭部 -->
+  <ellipse cx="16" cy="12" rx="8" ry="10" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  
+  <!-- 球拍網線 - 縱向 -->
+  <line x1="12" y1="6" x2="12" y2="18" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="14" y1="4" x2="14" y2="20" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="16" y1="2" x2="16" y2="22" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="18" y1="4" x2="18" y2="20" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="20" y1="6" x2="20" y2="18" stroke="#34495e" stroke-width="0.5"/>
+  
+  <!-- 球拍網線 - 橫向 -->
+  <line x1="10" y1="8" x2="22" y2="8" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="9" y1="10" x2="23" y2="10" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="8" y1="12" x2="24" y2="12" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="9" y1="14" x2="23" y2="14" stroke="#34495e" stroke-width="0.5"/>
+  <line x1="10" y1="16" x2="22" y2="16" stroke="#34495e" stroke-width="0.5"/>
+  
+  <!-- 球拍握把 -->
+  <rect x="15" y="22" width="2" height="8" fill="#8b4513" rx="1"/>
+  <rect x="14.5" y="28" width="3" height="2" fill="#654321" rx="0.5"/>
+  
+  <!-- 羽毛球 -->
+  <circle cx="24" cy="8" r="2" fill="#f8f9fa"/>
+  <path d="M24 6 L26 4 M24 6 L22 4 M24 6 L25 3 M24 6 L23 3" stroke="#e9ecef" stroke-width="1" fill="none"/>
+</svg>
