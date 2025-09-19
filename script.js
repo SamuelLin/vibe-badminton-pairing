@@ -76,6 +76,7 @@ class BadmintonPairingSystem {
             name: name,
             level: level,
             isPlaying: false,
+            isResting: false,
             courtId: null,
             gamesPlayed: 0,        // 已打場次
             waitingRounds: 0       // 等待場次
@@ -809,6 +810,24 @@ class BadmintonPairingSystem {
         document.getElementById('edit-player-dialog').close();
     }
 
+    toggleRest(playerId) {
+        const player = this.players.find(p => p.id === playerId);
+        if (!player || player.isPlaying) return;
+
+        if (player.isResting) {
+            // 取消休息，回到等待狀態
+            player.isResting = false;
+            this.waitingPlayers.push(player);
+        } else {
+            // 開始休息，從等待列表移除
+            player.isResting = true;
+            this.waitingPlayers = this.waitingPlayers.filter(p => p.id !== playerId);
+        }
+
+        this.updateDisplay();
+        this.saveToLocalStorage();
+    }
+
     displayLastUpdated() {
         const now = new Date();
         const currentYear = now.getFullYear();
@@ -857,28 +876,42 @@ class BadmintonPairingSystem {
         this.players.forEach(player => {
             const div = document.createElement('div');
             div.className = 'player-item';
-            const status = player.isPlaying ? `在場地 ${player.courtId}` : '等待中';
-            const isPlaying = player.isPlaying;
-            const removeButtonClass = isPlaying ? 'remove-btn disabled' : 'remove-btn';
-            const removeButtonText = isPlaying ? '比賽中' : '移除';
-            const removeButtonDisabled = isPlaying ? 'disabled' : '';
-            const removeButtonOnClick = isPlaying ? '' : `onclick="pairingSystem.removePlayer(${player.id})"`;
 
-            const editButtonClass = isPlaying ? 'edit-btn disabled' : 'edit-btn';
-            const editButtonText = isPlaying ? '比賽中' : '編輯';
-            const editButtonDisabled = isPlaying ? 'disabled' : '';
-            const editButtonOnClick = isPlaying ? '' : `onclick="pairingSystem.editPlayer(${player.id})"`;
+            let status = '';
+            if (player.isPlaying) {
+                status = `在場地 ${player.courtId}`;
+            } else if (player.isResting) {
+                status = '休息中';
+            } else {
+                status = '等待中';
+            }
+
+            const isPlaying = player.isPlaying;
+            const isResting = player.isResting;
+
+            let playerActionsHtml = '';
+            if (isPlaying) {
+                // 比賽中只顯示文字，不顯示按鈕
+                playerActionsHtml = '<span class="playing-status">比賽中</span>';
+            } else {
+                // 等待中或休息中顯示操作按鈕
+                const restButtonText = isResting ? '休息中' : '休息';
+                playerActionsHtml = `
+                    <button class="rest-btn" onclick="pairingSystem.toggleRest(${player.id})">${restButtonText}</button>
+                    <button class="edit-btn" onclick="pairingSystem.editPlayer(${player.id})">編輯</button>
+                    <button class="remove-btn" onclick="pairingSystem.removePlayer(${player.id})">移除</button>
+                `;
+            }
 
             div.innerHTML = `
                 <div class="player-info">
                     <span class="player-name">${player.name}</span>
                     <span class="player-level">Lv.${player.level}</span>
                     <span class="player-stats">已打:${player.gamesPlayed} 等待:${player.waitingRounds}</span>
-                    <span style="font-size: 0.8rem; color: #666;">${status}</span>
+                    ${isPlaying ? `<span style="font-size: 0.8rem; color: #666;">${status}</span>` : ''}
                 </div>
                 <div class="player-actions">
-                    <button class="${editButtonClass}" ${editButtonDisabled} ${editButtonOnClick}>${editButtonText}</button>
-                    <button class="${removeButtonClass}" ${removeButtonDisabled} ${removeButtonOnClick}>${removeButtonText}</button>
+                    ${playerActionsHtml}
                 </div>
             `;
             container.appendChild(div);
@@ -1085,11 +1118,13 @@ class BadmintonPairingSystem {
                 this.players.forEach(player => {
                     if (player.gamesPlayed === undefined) player.gamesPlayed = 0;
                     if (player.waitingRounds === undefined) player.waitingRounds = 0;
+                    if (player.isResting === undefined) player.isResting = false;
                 });
-                
+
                 this.waitingPlayers.forEach(player => {
                     if (player.gamesPlayed === undefined) player.gamesPlayed = 0;
                     if (player.waitingRounds === undefined) player.waitingRounds = 0;
+                    if (player.isResting === undefined) player.isResting = false;
                 });
                 
                 // 更新場地數量輸入欄位
