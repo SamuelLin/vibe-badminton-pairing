@@ -815,8 +815,8 @@ class BadmintonPairingSystem {
       parseInt(document.getElementById("edit-waiting-rounds").value) || 0;
 
     // 驗證資料
-    if (newLevel < 4 || newLevel > 12) {
-      alert("等級必須在4-12之間");
+    if (newLevel < 3 || newLevel > 12) {
+      alert("等級必須在3-12之間");
       return;
     }
 
@@ -944,8 +944,8 @@ class BadmintonPairingSystem {
           return;
         }
 
-        if (playerData.level < 4 || playerData.level > 12) {
-          errors.push(`第 ${index + 1} 筆：等級必須在 4-12 之間`);
+        if (playerData.level < 3 || playerData.level > 12) {
+          errors.push(`第 ${index + 1} 筆：等級必須在 3-12 之間`);
           return;
         }
 
