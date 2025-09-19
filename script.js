@@ -302,6 +302,25 @@ class BadmintonPairingSystem {
     const team1Levels = team1Players.map((p) => p.level).sort((a, b) => b - a);
     const team2Levels = team2Players.map((p) => p.level).sort((a, b) => b - a);
 
+    // === 新增：避免「強強對弱弱」配對 ===
+    // 根據四位選手的相對等級動態判斷強弱
+    const allFourLevels = [...team1Levels, ...team2Levels].sort((a, b) => b - a); // [最強, 次強, 次弱, 最弱]
+    const strongest = allFourLevels[0];
+    const secondStrong = allFourLevels[1];
+    const secondWeak = allFourLevels[2];
+    const weakest = allFourLevels[3];
+
+    // 動態判斷強弱：前兩名算強，後兩名算弱
+    const team1_isBothStrong = team1Levels[0] >= secondStrong && team1Levels[1] >= secondStrong;
+    const team1_isBothWeak = team1Levels[0] <= secondWeak && team1Levels[1] <= secondWeak;
+    const team2_isBothStrong = team2Levels[0] >= secondStrong && team2Levels[1] >= secondStrong;
+    const team2_isBothWeak = team2Levels[0] <= secondWeak && team2Levels[1] <= secondWeak;
+
+    // 強強對弱弱的情況：重懲罰
+    if ((team1_isBothStrong && team2_isBothWeak) || (team2_isBothStrong && team1_isBothWeak)) {
+      balanceScore -= 80; // 重懲罰強強對弱弱
+    }
+
     // 檢查最強vs最強，最弱vs最弱的差距
     const strongestDiff = Math.abs(team1Levels[0] - team2Levels[0]);
     const weakestDiff = Math.abs(team1Levels[1] - team2Levels[1]);
@@ -321,6 +340,14 @@ class BadmintonPairingSystem {
     // 如果兩隊都是強弱搭配（而不是強強對弱弱），給額外獎勵
     if (team1Balance > 0 && team2Balance > 0) {
       balanceScore += 15; // 強弱搭配獎勵
+    }
+
+    // 特別獎勵：雙方都是一強一弱的理想配對
+    const team1_isStrongWeak = (team1Levels[0] >= secondStrong && team1Levels[1] <= secondWeak);
+    const team2_isStrongWeak = (team2Levels[0] >= secondStrong && team2Levels[1] <= secondWeak);
+
+    if (team1_isStrongWeak && team2_isStrongWeak) {
+      balanceScore += 25; // 雙強弱搭配額外獎勵
     }
 
     return Math.max(balanceScore, -50); // 最低不低於-50分
