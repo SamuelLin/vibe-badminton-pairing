@@ -92,21 +92,48 @@ class BadmintonPairingSystem {
     }
 
     removePlayer(playerId) {
-        // 從所有列表中移除
-        this.players = this.players.filter(p => p.id !== playerId);
-        this.waitingPlayers = this.waitingPlayers.filter(p => p.id !== playerId);
-        
-        // 如果該人員正在場上，需要結束該場比賽
-        const court = this.courts.find(c => 
-            c.pairs.some(pair => 
+        // 檢查該球員是否正在比賽中
+        const court = this.courts.find(c =>
+            c.pairs.some(pair =>
                 pair.players.some(p => p.id === playerId)
             )
         );
-        
+
+        // 從所有列表中移除
+        this.players = this.players.filter(p => p.id !== playerId);
+        this.waitingPlayers = this.waitingPlayers.filter(p => p.id !== playerId);
+
+        // 如果該人員正在場上，需要結束該場比賽，但不要把已移除的球員加回等待列表
         if (court) {
-            this.endGame(court.id);
+            this.endGameWithRemovedPlayer(court.id, playerId);
         }
-        
+
+        this.updateDisplay();
+        this.saveToLocalStorage();
+    }
+
+    endGameWithRemovedPlayer(courtId, removedPlayerId) {
+        const court = this.courts.find(c => c.id === courtId);
+        if (!court || !court.occupied) return;
+
+        // 將人員移回等待列表，但排除已移除的球員
+        court.pairs.forEach(pair => {
+            pair.players.forEach(player => {
+                if (player.id !== removedPlayerId) {
+                    player.isPlaying = false;
+                    player.courtId = null;
+                    player.gamesPlayed++; // 增加已打場次
+                    player.waitingRounds = 0; // 重置等待場次
+                    this.waitingPlayers.push(player);
+                }
+            });
+        });
+
+        // 重置場地
+        court.occupied = false;
+        court.pairs = [];
+        court.startTime = null;
+
         this.updateDisplay();
         this.saveToLocalStorage();
     }
@@ -447,11 +474,10 @@ class BadmintonPairingSystem {
 
     recordPairingHistory(pairing) {
         const pairs = [pairing.pair1, pairing.pair2];
-        
+
         pairs.forEach(pair => {
             const key1 = `${pair[0].id}-${pair[1].id}`;
-            const key2 = `${pair[1].id}-${pair[0].id}`;
-            
+
             this.pairingHistory.set(key1, (this.pairingHistory.get(key1) || 0) + 1);
         });
     }
@@ -460,14 +486,18 @@ class BadmintonPairingSystem {
         const court = this.courts.find(c => c.id === courtId);
         if (!court || !court.occupied) return;
 
-        // 將人員移回等待列表
+        // 將人員移回等待列表 - 確保更新的是 this.players 中的實際物件
         court.pairs.forEach(pair => {
             pair.players.forEach(player => {
-                player.isPlaying = false;
-                player.courtId = null;
-                player.gamesPlayed++; // 增加已打場次
-                player.waitingRounds = 0; // 重置等待場次
-                this.waitingPlayers.push(player);
+                // 找到 this.players 中對應的實際球員物件
+                const actualPlayer = this.players.find(p => p.id === player.id);
+                if (actualPlayer) {
+                    actualPlayer.isPlaying = false;
+                    actualPlayer.courtId = null;
+                    actualPlayer.gamesPlayed++; // 增加已打場次
+                    actualPlayer.waitingRounds = 0; // 重置等待場次
+                    this.waitingPlayers.push(actualPlayer);
+                }
             });
         });
 
@@ -478,6 +508,77 @@ class BadmintonPairingSystem {
 
         this.updateDisplay();
         this.saveToLocalStorage();
+    }
+
+    cancelStart(courtId) {
+        const court = this.courts.find(c => c.id === courtId);
+        if (!court || !court.occupied) return;
+
+        // 記錄取消的球員ID，避免重複調整等待場次
+        const cancelledPlayerIds = new Set();
+
+        // 將人員移回等待列表，但不增加已打場次（因為比賽沒有實際進行）
+        court.pairs.forEach(pair => {
+            pair.players.forEach(player => {
+                const actualPlayer = this.players.find(p => p.id === player.id);
+                if (actualPlayer) {
+                    actualPlayer.isPlaying = false;
+                    actualPlayer.courtId = null;
+                    // 注意：不增加 gamesPlayed，因為比賽還沒實際進行
+                    this.waitingPlayers.push(actualPlayer);
+                    cancelledPlayerIds.add(actualPlayer.id);
+                }
+            });
+        });
+
+        // 恢復其他等待球員的等待場次（減少1，因為這場比賽被取消了）
+        // 但不包括剛被取消的球員，因為他們的等待場次已經在開始比賽時被重置了
+        this.waitingPlayers.forEach(player => {
+            if (!cancelledPlayerIds.has(player.id) && player.waitingRounds > 0) {
+                player.waitingRounds--;
+            }
+        });
+
+        // 移除配對歷史記錄（因為比賽沒有實際進行）
+        this.removePairingHistory({
+            pair1: court.pairs[0].players,
+            pair2: court.pairs[1].players
+        });
+
+        // 場地恢復到準備狀態，保留配對
+        court.occupied = false;
+        court.startTime = null;
+        // 保留 court.pairs，讓使用者可以重新開始或編輯
+
+        this.updateDisplay();
+        this.saveToLocalStorage();
+    }
+
+    removePairingHistory(pairing) {
+        const pairs = [pairing.pair1, pairing.pair2];
+
+        pairs.forEach(pair => {
+            const key1 = `${pair[0].id}-${pair[1].id}`;
+            const key2 = `${pair[1].id}-${pair[0].id}`;
+
+            // 減少配對歷史計數，最小為0
+            const count1 = this.pairingHistory.get(key1) || 0;
+            const count2 = this.pairingHistory.get(key2) || 0;
+
+            if (count1 > 0) {
+                this.pairingHistory.set(key1, count1 - 1);
+                if (this.pairingHistory.get(key1) === 0) {
+                    this.pairingHistory.delete(key1);
+                }
+            }
+
+            if (count2 > 0) {
+                this.pairingHistory.set(key2, count2 - 1);
+                if (this.pairingHistory.get(key2) === 0) {
+                    this.pairingHistory.delete(key2);
+                }
+            }
+        });
     }
 
     startAllReadyCourts() {
@@ -682,9 +783,6 @@ class BadmintonPairingSystem {
                     <span class="player-level">Lv.${player.level}</span>
                     <span class="player-stats">已打:${player.gamesPlayed} 等待:${player.waitingRounds}</span>
                 </div>
-                <div class="player-actions">
-                    <button class="remove-btn" onclick="pairingSystem.removePlayer(${player.id})">移除</button>
-                </div>
             `;
             container.appendChild(div);
         });
@@ -698,6 +796,12 @@ class BadmintonPairingSystem {
             const div = document.createElement('div');
             div.className = 'player-item';
             const status = player.isPlaying ? `在場地 ${player.courtId}` : '等待中';
+            const isPlaying = player.isPlaying;
+            const removeButtonClass = isPlaying ? 'remove-btn disabled' : 'remove-btn';
+            const removeButtonText = isPlaying ? '比賽中' : '移除';
+            const removeButtonDisabled = isPlaying ? 'disabled' : '';
+            const removeButtonOnClick = isPlaying ? '' : `onclick="pairingSystem.removePlayer(${player.id})"`;
+
             div.innerHTML = `
                 <div class="player-info">
                     <span class="player-name">${player.name}</span>
@@ -706,7 +810,7 @@ class BadmintonPairingSystem {
                     <span style="font-size: 0.8rem; color: #666;">${status}</span>
                 </div>
                 <div class="player-actions">
-                    <button class="remove-btn" onclick="pairingSystem.removePlayer(${player.id})">移除</button>
+                    <button class="${removeButtonClass}" ${removeButtonDisabled} ${removeButtonOnClick}>${removeButtonText}</button>
                 </div>
             `;
             container.appendChild(div);
@@ -749,6 +853,7 @@ class BadmintonPairingSystem {
                             </div>
                         </div>
                         <div class="court-actions">
+                            <button class="cancel-start-btn" onclick="pairingSystem.cancelStart(${court.id})">取消開始</button>
                             <button class="end-game-btn" onclick="pairingSystem.endGame(${court.id})">結束比賽</button>
                         </div>
                     </div>
