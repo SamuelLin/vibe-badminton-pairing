@@ -898,8 +898,8 @@ class BadmintonPairingSystem {
                 const restButtonText = isResting ? '休息中' : '休息';
                 playerActionsHtml = `
                     <button class="rest-btn" onclick="pairingSystem.toggleRest(${player.id})">${restButtonText}</button>
-                    <button class="edit-btn" onclick="pairingSystem.editPlayer(${player.id})">編輯</button>
-                    <button class="remove-btn" onclick="pairingSystem.removePlayer(${player.id})">移除</button>
+                    <button class="icon-btn edit-icon" onclick="pairingSystem.editPlayer(${player.id})"><i class="fas fa-edit"></i></button>
+                    <button class="icon-btn remove-icon" onclick="pairingSystem.removePlayer(${player.id})"><i class="fas fa-trash"></i></button>
                 `;
             }
 

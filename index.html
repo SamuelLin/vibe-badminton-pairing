@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>羽球配對</title>
-    <meta name="description" content="專業羽球配對系統，智能算法自動配對，動態場地管理，確保比賽公平性。羽球館、社團首選工具，提升運動體驗。">
-    <meta name="author" content="samuelhsnu@gmail.com">
-    <meta name="robots" content="index, follow">
-    
+    <meta
+      name="description"
+      content="專業羽球配對系統，智能算法自動配對，動態場地管理，確保比賽公平性。羽球館、社團首選工具，提升運動體驗。"
+    />
+    <meta name="author" content="samuelhsnu@gmail.com" />
+    <meta name="robots" content="index, follow" />
+
     <!-- Open Graph Meta Tags for Social Media -->
-    <meta property="og:title" content="羽球配對系統">
-    <meta property="og:description" content="羽球配對系統、場地管理、等級平衡，讓羽球運動更公平有趣！">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://samuellin.github.io/vibe-badminton-pairing">
-    <meta property="og:locale" content="zh_TW">
-    
+    <meta property="og:title" content="羽球配對系統" />
+    <meta
+      property="og:description"
+      content="羽球配對系統、場地管理、等級平衡，讓羽球運動更公平有趣！"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://samuellin.github.io/vibe-badminton-pairing"
+    />
+    <meta property="og:locale" content="zh_TW" />
+
     <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:title" content="羽球配對系統 - 智能羽球配對平台">
-    <meta name="twitter:description" content="專業的羽球配對系統，智能配對、場地管理、等級平衡">
-    
+    <meta name="twitter:title" content="羽球配對系統 - 智能羽球配對平台" />
+    <meta
+      name="twitter:description"
+      content="專業的羽球配對系統，智能配對、場地管理、等級平衡"
+    />
+
     <!-- Structured Data for Search Engines -->
     <script type="application/ld+json">
-    {
+      {
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "羽球配對系統",
@@ -30,148 +42,179 @@
         "applicationCategory": "SportsApplication",
         "operatingSystem": "Web Browser",
         "author": {
-            "@type": "Person",
-            "name": "Samuel",
-            "email": "samuelhsnu@gmail.com"
+          "@type": "Person",
+          "name": "Samuel",
+          "email": "samuelhsnu@gmail.com"
         },
         "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "TWD"
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "TWD"
         },
         "featureList": [
-            "羽球配對",
-            "動態場地管理",
-            "等級平衡系統",
-            "公平性統計",
-            "即時場地狀態"
+          "羽球配對",
+          "動態場地管理",
+          "等級平衡系統",
+          "公平性統計",
+          "即時場地狀態"
         ]
-    }
+      }
     </script>
-    
+
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://samuellin.github.io/vibe-badminton-pairing/">
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link
+      rel="canonical"
+      href="https://samuellin.github.io/vibe-badminton-pairing/"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>🏸 羽球配對系統</h1>
-            <div class="version-info">v0.1.1</div>
-            <div class="seo-description">
-                提供羽球配對、動態場地管理、等級平衡算法，適合羽球館、羽球社團使用
-            </div>
-        </header>
+      <header>
+        <h1>🏸 羽球配對系統</h1>
+        <div class="version-info">v0.1.1</div>
+        <div class="seo-description">
+          提供羽球配對、動態場地管理、等級平衡算法，適合羽球館、羽球社團使用
+        </div>
+      </header>
 
-        <div class="controls-section">
-            <div class="control-group">
-                <label for="court-count">場地數量:</label>
-                <input type="number" id="court-count" min="1" max="10" value="4">
-                <button id="update-courts">更新場地</button>
+      <div class="controls-section">
+        <div class="control-group">
+          <label for="court-count">場地數量:</label>
+          <input type="number" id="court-count" min="1" max="10" value="4" />
+          <button id="update-courts">更新場地</button>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="left-panel">
+          <div class="player-management">
+            <h2>羽球人員管理</h2>
+            <div class="add-player">
+              <input type="text" id="player-name" placeholder="輸入姓名" />
+              <select id="player-level">
+                <option value="">選擇等級</option>
+                <option value="4">等級 4</option>
+                <option value="5">等級 5</option>
+                <option value="6">等級 6</option>
+                <option value="7">等級 7</option>
+                <option value="8">等級 8</option>
+                <option value="9">等級 9</option>
+                <option value="10">等級 10</option>
+                <option value="11">等級 11</option>
+                <option value="12">等級 12</option>
+              </select>
+              <button id="add-player"><i class="fas fa-plus"></i></button>
             </div>
+
+            <div class="all-players">
+              <h3>所有人員</h3>
+              <div id="all-players-list"></div>
+              <button id="reset-stats" class="reset-stats-btn">
+                重置所有統計
+              </button>
+              <button id="clear-all-data" class="clear-all-btn">
+                清空所有資料
+              </button>
+            </div>
+
+            <div class="waiting-players">
+              <h3>等待中的人員</h3>
+              <div id="waiting-list"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="main-content">
-            <div class="left-panel">
-                <div class="player-management">
-                    <h2>羽球人員管理</h2>
-                    <div class="add-player">
-                        <input type="text" id="player-name" placeholder="輸入姓名">
-                        <select id="player-level">
-                            <option value="">選擇等級</option>
-                            <option value="4">等級 4</option>
-                            <option value="5">等級 5</option>
-                            <option value="6">等級 6</option>
-                            <option value="7">等級 7</option>
-                            <option value="8">等級 8</option>
-                            <option value="9">等級 9</option>
-                            <option value="10">等級 10</option>
-                            <option value="11">等級 11</option>
-                            <option value="12">等級 12</option>
-                        </select>
-                        <button id="add-player">新增人員</button>
-                    </div>
-                    
-                    <div class="all-players">
-                        <h3>所有人員</h3>
-                        <div id="all-players-list"></div>
-                        <button id="reset-stats" class="reset-stats-btn">重置所有統計</button>
-                        <button id="clear-all-data" class="clear-all-btn">清空所有資料</button>
-                    </div>
-
-                    <div class="waiting-players">
-                        <h3>等待中的人員</h3>
-                        <div id="waiting-list"></div>
-                    </div>
-                </div>
+        <div class="right-panel">
+          <div class="courts-section">
+            <h2>羽球場地狀況管理</h2>
+            <div id="courts-container"></div>
+            <div class="pairing-controls">
+              <button id="auto-pair" class="auto-pair-btn">自動配對</button>
+              <button id="manual-start" class="manual-start-btn">
+                開始所有空閒場地
+              </button>
             </div>
-
-            <div class="right-panel">
-                <div class="courts-section">
-                    <h2>羽球場地狀況管理</h2>
-                    <div id="courts-container"></div>
-                    <div class="pairing-controls">
-                        <button id="auto-pair" class="auto-pair-btn">自動配對</button>
-                        <button id="manual-start" class="manual-start-btn">開始所有空閒場地</button>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- 編輯球員 Dialog -->
     <dialog id="edit-player-dialog" class="edit-dialog">
-        <div class="dialog-content">
-            <h3>編輯球員資料</h3>
-            <form id="edit-player-form" method="dialog">
-                <div class="form-group">
-                    <label for="edit-player-name">姓名：</label>
-                    <input type="text" id="edit-player-name" readonly>
-                </div>
+      <div class="dialog-content">
+        <h3>編輯球員資料</h3>
+        <form id="edit-player-form" method="dialog">
+          <div class="form-group">
+            <label for="edit-player-name">姓名：</label>
+            <input type="text" id="edit-player-name" readonly />
+          </div>
 
-                <div class="form-group">
-                    <label for="edit-player-level">等級：</label>
-                    <select id="edit-player-level">
-                        <option value="4">等級 4</option>
-                        <option value="5">等級 5</option>
-                        <option value="6">等級 6</option>
-                        <option value="7">等級 7</option>
-                        <option value="8">等級 8</option>
-                        <option value="9">等級 9</option>
-                        <option value="10">等級 10</option>
-                        <option value="11">等級 11</option>
-                        <option value="12">等級 12</option>
-                    </select>
-                </div>
+          <div class="form-group">
+            <label for="edit-player-level">等級：</label>
+            <select id="edit-player-level">
+              <option value="4">等級 4</option>
+              <option value="5">等級 5</option>
+              <option value="6">等級 6</option>
+              <option value="7">等級 7</option>
+              <option value="8">等級 8</option>
+              <option value="9">等級 9</option>
+              <option value="10">等級 10</option>
+              <option value="11">等級 11</option>
+              <option value="12">等級 12</option>
+            </select>
+          </div>
 
-                <div class="form-group">
-                    <label for="edit-games-played">已打場次：</label>
-                    <input type="number" id="edit-games-played" min="0">
-                </div>
+          <div class="form-group">
+            <label for="edit-games-played">已打場次：</label>
+            <input type="number" id="edit-games-played" min="0" />
+          </div>
 
-                <div class="form-group">
-                    <label for="edit-waiting-rounds">等待場次：</label>
-                    <input type="number" id="edit-waiting-rounds" min="0">
-                </div>
+          <div class="form-group">
+            <label for="edit-waiting-rounds">等待場次：</label>
+            <input type="number" id="edit-waiting-rounds" min="0" />
+          </div>
 
-                <div class="dialog-actions">
-                    <button type="button" class="cancel-btn" onclick="pairingSystem.cancelEditPlayer()">取消</button>
-                    <button type="button" class="save-btn" onclick="pairingSystem.saveEditPlayer()">儲存</button>
-                </div>
-            </form>
-        </div>
+          <div class="dialog-actions">
+            <button
+              type="button"
+              class="cancel-btn"
+              onclick="pairingSystem.cancelEditPlayer()"
+            >
+              取消
+            </button>
+            <button
+              type="button"
+              class="save-btn"
+              onclick="pairingSystem.saveEditPlayer()"
+            >
+              儲存
+            </button>
+          </div>
+        </form>
+      </div>
     </dialog>
 
     <footer class="footer">
-        <div class="footer-content">
-            <span>有問題歡迎來信 <a href="mailto:samuelhsnu@gmail.com">samuelhsnu@gmail.com</a></span>
-        </div>
+      <div class="footer-content">
+        <span
+          >有問題歡迎來信
+          <a href="mailto:samuelhsnu@gmail.com">samuelhsnu@gmail.com</a></span
+        >
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
-</html> 
+  </body>
+</html>
