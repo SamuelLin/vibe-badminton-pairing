@@ -118,6 +118,12 @@
               <button id="add-player"><i class="fas fa-plus"></i></button>
             </div>
 
+            <div class="batch-import-section">
+              <button id="batch-import" class="batch-import-btn">
+                <i class="fas fa-upload"></i> 批次匯入人員名單
+              </button>
+            </div>
+
             <div class="all-players">
               <h3>所有人員</h3>
               <div id="all-players-list"></div>
@@ -150,6 +156,40 @@
         </div>
       </div>
     </div>
+
+    <!-- 批次匯入 Dialog -->
+    <dialog id="batch-import-dialog" class="import-dialog">
+      <div class="dialog-content">
+        <h3>批次匯入人員名單</h3>
+        <form id="batch-import-form" method="dialog">
+          <div class="import-methods">
+            <div class="method-section">
+              <h4>方法一：上傳 JSON 檔案</h4>
+              <input type="file" id="json-file-input" accept=".json" />
+            </div>
+
+            <div class="method-section">
+              <h4>方法二：直接貼上 JSON</h4>
+              <textarea id="json-text-input" placeholder="請貼上 JSON 格式的人員名單..." rows="8"></textarea>
+            </div>
+          </div>
+
+          <div class="json-example">
+            <h4>JSON 格式範例：</h4>
+            <pre><code>[
+  {"name": "王小明", "level": 8},
+  {"name": "李小華", "level": 6},
+  {"name": "張三", "level": 10}
+]</code></pre>
+          </div>
+
+          <div class="dialog-actions">
+            <button type="button" class="cancel-btn" onclick="pairingSystem.cancelBatchImport()">取消</button>
+            <button type="button" class="import-btn" onclick="pairingSystem.processBatchImport()">匯入</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
 
     <!-- 編輯球員 Dialog -->
     <dialog id="edit-player-dialog" class="edit-dialog">

@@ -117,7 +117,7 @@ header h1 {
 .add-player {
     display: flex;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
 }
 
@@ -130,7 +130,7 @@ header h1 {
 }
 
 .add-player button {
-    padding: 10px 20px;
+    padding: 8px 12px;
     background: #28a745;
     color: white;
     border: none;
@@ -138,9 +138,36 @@ header h1 {
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.3s;
+    min-width: 40px;
 }
 
 .add-player button:hover {
+    background: #218838;
+}
+
+.batch-import-section {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.batch-import-btn {
+    width: 100%;
+    padding: 8px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.batch-import-btn:hover {
     background: #218838;
 }
 
@@ -728,6 +755,104 @@ header h1 {
     background: #218838;
 }
 
+.import-dialog {
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px);
+    margin: auto;
+}
+
+.import-dialog::backdrop {
+    background: rgba(0,0,0,0.5);
+}
+
+.import-dialog .dialog-content {
+    min-width: 500px;
+    max-width: 600px;
+}
+
+.import-methods {
+    margin-bottom: 20px;
+}
+
+.method-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.method-section h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 1rem;
+}
+
+.method-section input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 2px dashed #007bff;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+}
+
+.method-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 14px;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.method-section textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.json-example {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #e9ecef;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.json-example h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.json-example pre {
+    margin: 0;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.json-example code {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #495057;
+}
+
+.dialog-actions .import-btn {
+    background: #28a745;
+    color: white;
+}
+
+.dialog-actions .import-btn:hover {
+    background: #218838;
+}
+
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
@@ -735,6 +860,17 @@ header h1 {
 
     .add-player {
         flex-direction: column;
+        gap: 8px;
+    }
+
+    .add-player input,
+    .add-player select {
+        min-width: auto;
+    }
+
+    .add-player button {
+        padding: 10px 16px;
+        font-size: 14px;
     }
 
     .control-group {
@@ -759,6 +895,35 @@ header h1 {
         min-width: 100px;
     }
 
+    .player-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .player-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-start;
+    }
+
+    .player-actions button {
+        flex: 0 0 auto;
+        font-size: 11px;
+        padding: 6px 8px;
+        min-width: 60px;
+    }
+
+    .icon-btn {
+        padding: 6px 8px;
+        min-width: 32px;
+    }
+
+    .rest-btn {
+        min-width: 70px;
+    }
+
     .footer-content {
         flex-direction: column;
         gap: 10px;
@@ -775,5 +940,33 @@ header h1 {
 
     .dialog-actions button {
         width: 100%;
+    }
+
+    .import-dialog .dialog-content {
+        min-width: 300px;
+        margin: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .add-player {
+        gap: 6px;
+    }
+
+    .add-player input,
+    .add-player select {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .add-player button {
+        padding: 8px 12px;
+        font-size: 13px;
+        min-width: 36px;
+    }
+
+    .import-dialog .dialog-content {
+        min-width: 280px;
+        margin: 15px;
     }
 } 
