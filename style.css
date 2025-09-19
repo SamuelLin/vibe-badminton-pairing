@@ -222,6 +222,32 @@ header h1 {
     background: #6c757d;
 }
 
+.edit-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.edit-btn:hover {
+    background: #0056b3;
+}
+
+.edit-btn.disabled {
+    background: #6c757d;
+    color: #adb5bd;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.edit-btn.disabled:hover {
+    background: #6c757d;
+}
+
 .courts-section {
     padding: 20px;
 }
@@ -541,39 +567,145 @@ header h1 {
     font-size: 0.85rem;
 }
 
+.edit-dialog {
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px);
+    margin: auto;
+}
+
+.edit-dialog::backdrop {
+    background: rgba(0,0,0,0.5);
+}
+
+.dialog-content {
+    padding: 24px;
+    background: white;
+    border-radius: 12px;
+    min-width: 400px;
+}
+
+.dialog-content h3 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-group input[readonly] {
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.dialog-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.dialog-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.dialog-actions .cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.dialog-actions .cancel-btn:hover {
+    background: #5a6268;
+}
+
+.dialog-actions .save-btn {
+    background: #28a745;
+    color: white;
+}
+
+.dialog-actions .save-btn:hover {
+    background: #218838;
+}
+
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
     }
-    
+
     .add-player {
         flex-direction: column;
     }
-    
+
     .control-group {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .court-pairs {
         grid-template-columns: 1fr;
     }
-    
+
     .pairing-controls {
         flex-direction: column;
     }
-    
+
     .court-actions {
         flex-wrap: wrap;
     }
-    
+
     .court-actions button {
         margin-bottom: 5px;
         min-width: 100px;
     }
-    
+
     .footer-content {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .dialog-content {
+        min-width: 300px;
+        margin: 20px;
+    }
+
+    .dialog-actions {
+        flex-direction: column;
+    }
+
+    .dialog-actions button {
+        width: 100%;
     }
 } 

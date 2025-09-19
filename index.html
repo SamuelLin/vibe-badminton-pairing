@@ -123,6 +123,49 @@
         </div>
     </div>
 
+    <!-- 編輯球員 Dialog -->
+    <dialog id="edit-player-dialog" class="edit-dialog">
+        <div class="dialog-content">
+            <h3>編輯球員資料</h3>
+            <form id="edit-player-form" method="dialog">
+                <div class="form-group">
+                    <label for="edit-player-name">姓名：</label>
+                    <input type="text" id="edit-player-name" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-player-level">等級：</label>
+                    <select id="edit-player-level">
+                        <option value="4">等級 4</option>
+                        <option value="5">等級 5</option>
+                        <option value="6">等級 6</option>
+                        <option value="7">等級 7</option>
+                        <option value="8">等級 8</option>
+                        <option value="9">等級 9</option>
+                        <option value="10">等級 10</option>
+                        <option value="11">等級 11</option>
+                        <option value="12">等級 12</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-games-played">已打場次：</label>
+                    <input type="number" id="edit-games-played" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-waiting-rounds">等待場次：</label>
+                    <input type="number" id="edit-waiting-rounds" min="0">
+                </div>
+
+                <div class="dialog-actions">
+                    <button type="button" class="cancel-btn" onclick="pairingSystem.cancelEditPlayer()">取消</button>
+                    <button type="button" class="save-btn" onclick="pairingSystem.saveEditPlayer()">儲存</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
     <footer class="footer">
         <div class="footer-content">
             <span>有問題歡迎來信 <a href="mailto:samuelhsnu@gmail.com">samuelhsnu@gmail.com</a></span>

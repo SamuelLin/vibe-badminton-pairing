@@ -6,6 +6,7 @@ class BadmintonPairingSystem {
         this.pairingHistory = new Map(); // 記錄配對歷史
         this.courtCount = 4;
         this.editingCourt = null; // 正在編輯的場地
+        this.editingPlayerId = null; // 正在編輯的球員ID
         
         this.initializeEventListeners();
         this.updateCourts();
@@ -747,6 +748,67 @@ class BadmintonPairingSystem {
         alert('所有資料已清空，系統已重置');
     }
 
+    editPlayer(playerId) {
+        const player = this.players.find(p => p.id === playerId);
+        if (!player || player.isPlaying) return;
+
+        this.editingPlayerId = playerId;
+
+        // 填入當前資料
+        document.getElementById('edit-player-name').value = player.name;
+        document.getElementById('edit-player-level').value = player.level;
+        document.getElementById('edit-games-played').value = player.gamesPlayed;
+        document.getElementById('edit-waiting-rounds').value = player.waitingRounds;
+
+        // 顯示 dialog
+        document.getElementById('edit-player-dialog').showModal();
+    }
+
+    saveEditPlayer() {
+        if (!this.editingPlayerId) return;
+
+        const player = this.players.find(p => p.id === this.editingPlayerId);
+        if (!player) return;
+
+        // 取得新值，空白時預設為 0
+        const newLevel = parseInt(document.getElementById('edit-player-level').value);
+        const newGamesPlayed = parseInt(document.getElementById('edit-games-played').value) || 0;
+        const newWaitingRounds = parseInt(document.getElementById('edit-waiting-rounds').value) || 0;
+
+        // 驗證資料
+        if (newLevel < 4 || newLevel > 12) {
+            alert('等級必須在4-12之間');
+            return;
+        }
+
+        if (newGamesPlayed < 0 || newWaitingRounds < 0) {
+            alert('場次不能為負數');
+            return;
+        }
+
+        // 更新球員資料
+        player.level = newLevel;
+        player.gamesPlayed = newGamesPlayed;
+        player.waitingRounds = newWaitingRounds;
+
+        // 如果球員在等待列表中，也要更新等待列表中的資料
+        const waitingPlayer = this.waitingPlayers.find(p => p.id === this.editingPlayerId);
+        if (waitingPlayer) {
+            waitingPlayer.level = newLevel;
+            waitingPlayer.gamesPlayed = newGamesPlayed;
+            waitingPlayer.waitingRounds = newWaitingRounds;
+        }
+
+        this.cancelEditPlayer();
+        this.updateDisplay();
+        this.saveToLocalStorage();
+    }
+
+    cancelEditPlayer() {
+        this.editingPlayerId = null;
+        document.getElementById('edit-player-dialog').close();
+    }
+
     displayLastUpdated() {
         const now = new Date();
         const currentYear = now.getFullYear();
@@ -802,6 +864,11 @@ class BadmintonPairingSystem {
             const removeButtonDisabled = isPlaying ? 'disabled' : '';
             const removeButtonOnClick = isPlaying ? '' : `onclick="pairingSystem.removePlayer(${player.id})"`;
 
+            const editButtonClass = isPlaying ? 'edit-btn disabled' : 'edit-btn';
+            const editButtonText = isPlaying ? '比賽中' : '編輯';
+            const editButtonDisabled = isPlaying ? 'disabled' : '';
+            const editButtonOnClick = isPlaying ? '' : `onclick="pairingSystem.editPlayer(${player.id})"`;
+
             div.innerHTML = `
                 <div class="player-info">
                     <span class="player-name">${player.name}</span>
@@ -810,6 +877,7 @@ class BadmintonPairingSystem {
                     <span style="font-size: 0.8rem; color: #666;">${status}</span>
                 </div>
                 <div class="player-actions">
+                    <button class="${editButtonClass}" ${editButtonDisabled} ${editButtonOnClick}>${editButtonText}</button>
                     <button class="${removeButtonClass}" ${removeButtonDisabled} ${removeButtonOnClick}>${removeButtonText}</button>
                 </div>
             `;
